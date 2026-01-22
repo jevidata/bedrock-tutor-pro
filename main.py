@@ -215,6 +215,7 @@ def chat(request: ChatRequest):
     return ChatResponse(answer=answer)
     
 '''
+'''
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -277,5 +278,65 @@ def chat(request: ChatRequest):
 
     except Exception as e:
         full_answer = f"Error conectando con el agente de AWS: {str(e)}"
+
+    return ChatResponse(answer=full_answer)
+'''
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+import boto3
+
+app = FastAPI(title="Bedrock Tutor Pro API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+agent_client = boto3.client("bedrock-agent-runtime", region_name="us-east-1")
+
+AGENT_ID = "ZZR8GWAMJJ" 
+AGENT_ALIAS_ID = "TSTALIASID" 
+
+class ChatRequest(BaseModel):
+    message: str
+
+class ChatResponse(BaseModel):
+    answer: str
+
+@app.get("/")
+def read_root():
+    return {"status": "ok", "message": "API Activa"}
+
+@app.post("/chat", response_model=ChatResponse)
+def chat(request: ChatRequest):
+    question = request.message
+    session_id = "user-session-tutor-pro"
+    prompt_reforzado = f"{question} (Busca en la KB y extrae todos los detalles, leyes y requisitos sin resumir)."
+
+    try:
+        response = agent_client.invoke_agent(
+            agentId=AGENT_ID,
+            agentAliasId=AGENT_ALIAS_ID,
+            sessionId=session_id,
+            inputText=prompt_reforzado,
+            enableTrace=False,
+            endSession=False
+        )
+        
+        full_answer = ""
+        for event in response.get("completion", []):
+            if "chunk" in event:
+                chunk_bytes = event["chunk"].get("bytes", b"")
+                full_answer += chunk_bytes.decode("utf-8")
+        
+        if not full_answer:
+            full_answer = "No se pudo recuperar informacion detallada."
+
+    except Exception as e:
+        full_answer = f"Error: {str(e)}"
 
     return ChatResponse(answer=full_answer)
