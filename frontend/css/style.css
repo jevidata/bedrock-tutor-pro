@@ -1,0 +1,320 @@
+/* Configuración de la página */
+/*
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    color: #333;
+}
+
+.main-container {
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+}
+
+header h1 {
+    color: #1a73e8;
+    margin-bottom: 5px;
+}
+
+header p {
+    color: #5f6368;
+    margin-bottom: 30px;
+}
+
+/* Tarjeta del Chat */
+
+/*
+.chat-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: #202124;
+}
+
+/* Área de texto */
+/*
+textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: none;
+    box-sizing: border-box; /* Importante para que no se salga del borde 
+    margin-bottom: 20px;
+    transition: border 0.3s;
+}
+
+textarea:focus {
+    outline: none;
+    border: 2px solid #1a73e8;
+}
+
+/* Botón */
+/*
+button {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #1557b0;
+}
+
+/* Caja de respuesta */
+/*
+.response-section h2 {
+    font-size: 18px;
+    margin-top: 30px;
+    border-bottom: 2px solid #f1f3f4;
+    padding-bottom: 10px;
+}
+
+.answer-box {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1a73e8;
+    min-height: 50px;
+    line-height: 1.6;
+    margin-top: 15px;
+    white-space: pre-wrap; /* Mantiene los saltos de línea de la IA 
+}
+
+/* Ajustes para pantallas pequeñas (móviles) */
+/*
+@media (max-width: 600px) {
+    body {
+        padding-top: 20px;
+    }
+    .main-container {
+        width: 95%;
+    }
+    .chat-card {
+        padding: 20px;
+    }
+    header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+.copyright {
+    font-size: 0.85em;
+    color: #888;
+    margin-top: -20px; /* Para que quede pegado al texto de arriba 
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+/* Estilos para el indicador de carga 
+#loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    color: #1a73e8;
+    font-weight: bold;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #1a73e8; /* Color azul 
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Efecto de parpadeo para el texto 
+#loading span {
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+/*
+
+/* 1. CONFIGURACIÓN GLOBAL */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    color: #333;
+}
+
+.main-container {
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+}
+
+header h1 {
+    color: #1a73e8;
+    margin-bottom: 5px;
+}
+
+header p {
+    color: #5f6368;
+    margin-bottom: 10px;
+}
+
+.copyright {
+    font-size: 0.85em;
+    color: #888;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+/* 2. TARJETA DEL CHAT */
+.chat-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: #202124;
+}
+
+textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: none;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    transition: border 0.3s;
+}
+
+textarea:focus {
+    outline: none;
+    border: 2px solid #1a73e8;
+}
+
+button {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #1557b0;
+}
+
+/* 3. INDICADOR DE CARGA (SPINNER) */
+#loading {
+    display: none; /* Se activa desde app.js */
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 25px;
+    color: #1a73e8;
+    font-weight: bold;
+}
+
+.spinner {
+    width: 22px;
+    height: 22px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #1a73e8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading span {
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+
+/* 4. SECCIÓN DE RESPUESTA */
+.response-section h2 {
+    font-size: 18px;
+    margin-top: 30px;
+    border-bottom: 2px solid #f1f3f4;
+    padding-bottom: 10px;
+}
+
+.answer-box {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1a73e8;
+    min-height: 50px;
+    line-height: 1.6;
+    margin-top: 15px;
+    white-space: pre-wrap;
+}
+
+/* 5. RESPONSIVE DESIGN */
+@media (max-width: 600px) {
+    body {
+        padding-top: 20px;
+    }
+    .main-container {
+        width: 95%;
+    }
+    .chat-card {
+        padding: 20px;
+    }
+    header h1 {
+        font-size: 1.5rem;
+    }
+}
