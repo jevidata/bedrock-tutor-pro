@@ -280,14 +280,18 @@ def chat(request: ChatRequest):
         full_answer = f"Error conectando con el agente de AWS: {str(e)}"
 
     return ChatResponse(answer=full_answer)
+fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 '''
+import boto3
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import boto3
 
+# 1. Configuración de la App
 app = FastAPI(title="Bedrock Tutor Pro API")
 
+# 2. Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -296,47 +300,54 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 3. Cliente de AWS Bedrock
 agent_client = boto3.client("bedrock-agent-runtime", region_name="us-east-1")
 
+# IDs de configuración
 AGENT_ID = "ZZR8GWAMJJ" 
 AGENT_ALIAS_ID = "TSTALIASID" 
 
+# 4. Modelos de Datos
 class ChatRequest(BaseModel):
     message: str
 
 class ChatResponse(BaseModel):
     answer: str
 
+# 5. Rutas
 @app.get("/")
 def read_root():
-    return {"status": "ok", "message": "API Activa"}
+    return {"status": "ok", "message": "API Activa y lista para el Tutor"}
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
+    # Definimos la variable que viene del usuario
     question = request.message
     session_id = "user-session-tutor-pro"
-    prompt_reforzado = f"{question} (Busca en la KB y extrae todos los detalles, leyes y requisitos sin resumir)."
-
+    
     try:
+        # Llamada al agente usando los nombres de parámetros exactos y la variable 'question'
         response = agent_client.invoke_agent(
             agentId=AGENT_ID,
             agentAliasId=AGENT_ALIAS_ID,
             sessionId=session_id,
-            inputText=prompt_reforzado,
+            inputText=question,
             enableTrace=False,
             endSession=False
         )
         
         full_answer = ""
+        # Procesar la respuesta por fragmentos (chunks)
         for event in response.get("completion", []):
             if "chunk" in event:
                 chunk_bytes = event["chunk"].get("bytes", b"")
                 full_answer += chunk_bytes.decode("utf-8")
         
         if not full_answer:
-            full_answer = "No se pudo recuperar informacion detallada."
+            full_answer = "El agente no encontró información específica en los documentos."
 
     except Exception as e:
-        full_answer = f"Error: {str(e)}"
+        print(f"Error detectado: {str(e)}")
+        full_answer = f"Error de conexión con AWS: {str(e)}"
 
     return ChatResponse(answer=full_answer)
