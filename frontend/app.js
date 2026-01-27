@@ -51,48 +51,66 @@ sendBtn.addEventListener("click", async () => {
 */
 const sendBtn = document.getElementById("send-btn");
 const questionInput = document.getElementById("question");
-const answerDiv = document.getElementById("answer");
+const chatContainer = document.getElementById("answer"); // Usaremos este como contenedor de mensajes
 const loadingDiv = document.getElementById("loading");
+
+// Función para añadir mensajes al chat
+function appendMessage(text, sender) {
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("message", sender); // sender será 'user' o 'bot'
+    
+    const innerDiv = document.createElement("div");
+    innerDiv.classList.add("message-content");
+    innerDiv.textContent = text;
+    
+    msgDiv.appendChild(innerDiv);
+    chatContainer.appendChild(msgDiv);
+
+    // Auto-scroll hacia abajo para ver la última respuesta
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
 
 sendBtn.addEventListener("click", async () => {
     const text = questionInput.value.trim();
     
-    if (!text) {
-        answerDiv.textContent = "Por favor, escribe una pregunta.";
-        return;
-    }
+    if (!text) return;
 
-    // 1. ACTIVAR ESTADO DE CARGA
+    // 1. MOSTRAR MENSAJE DEL USUARIO EN EL CHAT
+    appendMessage(text, "user");
+    questionInput.value = ""; // Limpiar el input inmediatamente
+
+    // 2. ACTIVAR ESTADO DE CARGA
     if (loadingDiv) loadingDiv.style.display = "flex"; 
-    answerDiv.textContent = "";       
-    answerDiv.style.opacity = "0.5";
 
     try {
-        // 2. PETICIÓN AL BACKEND
+        // 3. PETICIÓN AL BACKEND
         const response = await fetch("http://127.0.0.1:8000/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            // Enviamos 'message' porque así está definido en tu main.py
             body: JSON.stringify({ message: text }), 
         });
 
         const data = await response.json();
 
-        // 3. DESACTIVAR CARGA Y MOSTRAR RESULTADO
+        // 4. DESACTIVAR CARGA Y MOSTRAR RESPUESTA DEL BOT
         if (loadingDiv) loadingDiv.style.display = "none";
-        answerDiv.style.opacity = "1";
 
         if (response.ok) {
-            // Tu backend devuelve { "answer": "..." }
-            answerDiv.textContent = data.answer || "El tutor no ha devuelto texto.";
+            appendMessage(data.answer || "El tutor no ha devuelto texto.", "bot");
         } else {
-            answerDiv.textContent = "Error en la respuesta del servidor (Status: " + response.status + ")";
+            appendMessage("Error en la respuesta del servidor (Status: " + response.status + ")", "bot");
         }
 
     } catch (error) {
         if (loadingDiv) loadingDiv.style.display = "none";
-        answerDiv.style.opacity = "1";
-        answerDiv.textContent = "No se ha podido conectar con el servidor. Revisa la terminal de Ubuntu.";
+        appendMessage("No se ha podido conectar con el servidor. Revisa la terminal.", "bot");
         console.error("Error:", error);
+    }
+});
+
+// EXTRA: Enviar con la tecla Enter
+questionInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        sendBtn.click();
     }
 });

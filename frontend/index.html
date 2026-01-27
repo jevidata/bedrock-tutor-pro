@@ -45,32 +45,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bedrock Tutor Pro</title>
+    <title>Bedrock Tutor Pro - IA Académica</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="main-container">
         <header>
-            <h1>Bedrock Tutor Pro</h1>
+            <h1>🤖 Bedrock Tutor Pro</h1>
             <p>Tu asistente inteligente de Big Data y Cloud</p>
             <p class="copyright">&copy; 2026 Jesús Vila - JeviData</p>
         </header>
 
-        <div class="chat-card">
-            <label for="question">¿En qué puedo ayudarte hoy?</label>
-            <textarea id="question" rows="4" placeholder="Escribe aquí tu duda..."></textarea>
-            
+        <div id="answer" class="answer-box">
+            <div class="message bot">
+                <div class="message-content">
+                    ¡Hola! Soy tu tutor especializado. ¿Qué duda tienes sobre Big Data o Cloud?
+                </div>
+            </div>
+        </div>
+
+        <div id="loading">
+            <div class="spinner"></div>
+            <span>El tutor está procesando la información...</span>
+        </div>
+
+        <div class="input-group">
+            <label for="question">Escribe tu consulta:</label>
+            <textarea id="question" rows="3" placeholder="Ej: ¿Qué es un RAG en Amazon Bedrock?"></textarea>
             <button id="send-btn">Enviar Consulta</button>
-
-            <div id="loading">
-                <div class="spinner"></div>
-                <span>El tutor está pensando...</span>
-            </div>
-
-            <div class="response-section">
-                <h2>Respuesta del tutor:</h2>
-                <div id="answer" class="answer-box">Esperando tu pregunta...</div>
-            </div>
         </div>
     </div>
 
